@@ -10,4 +10,7 @@ abstract class ApiClient {
 
   @POST("/login")
   Future<UserModel> login(@Body() Map<String, dynamic> body);
+
+  @POST("/register")
+  Future<UserModel> createAccount(@Body() Map<String, dynamic> body);
 }

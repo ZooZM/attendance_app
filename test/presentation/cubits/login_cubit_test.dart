@@ -33,6 +33,10 @@ void main() {
     name: "John Doe",
     email: tEmail,
     role: 'user',
+    userName: 'johndoe',
+    attendance: [],
+    createdAt: DateTime.now(),
+    password: tPassword,
   );
 
   blocTest<LoginCubit, LoginState>(

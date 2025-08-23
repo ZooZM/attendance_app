@@ -20,7 +20,7 @@ class UserModel extends HiveObject {
   final String role;
 
   @HiveField(4)
-  final String code;
+  final String userName;
 
   @HiveField(5)
   final List<AttendanceModel> attendance;
@@ -29,15 +29,16 @@ class UserModel extends HiveObject {
   final DateTime createdAt;
 
   @HiveField(7)
-  final String hasedPassword;
+  final String password;
+
   UserModel({
-    required this.hasedPassword,
+    required this.password,
     required this.createdAt,
     required this.id,
     required this.name,
     required this.email,
     required this.role,
-    required this.code,
+    required this.userName,
     required this.attendance,
   });
 

@@ -19,10 +19,8 @@ class CusttomButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 16),
-        backgroundColor: isLoading
-            ? kGray
-            : const Color(0xff3A4D6F), // Sets button background color
-        foregroundColor: Colors.white, // Ensures text color is set explicitly
+        backgroundColor: isLoading ? kGray : kPrimaryColor,
+        foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
       ),
       child: isLoading

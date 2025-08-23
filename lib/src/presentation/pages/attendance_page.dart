@@ -1,5 +1,6 @@
 import 'package:attendance_app/constants.dart';
 import 'package:attendance_app/src/core/utils/styles.dart';
+import 'package:attendance_app/src/presentation/pages/custtom_app_bar.dart';
 import 'package:attendance_app/src/presentation/widgets/custtom_button.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,7 @@ class AttendancePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Attendance"), centerTitle: true),
+      appBar: CustomAppBar(title: "Attendance"),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

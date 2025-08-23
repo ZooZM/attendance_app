@@ -33,14 +33,10 @@ class _LoginPageState extends State<LoginPage> {
 
   void _signIn(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
+      context.read<LoginCubit>().login(
+        _emailController.text,
+        _passwordController.text,
       );
-      // context.read<LoginCubit>().login(
-      //   _emailController.text,
-      //   _passwordController.text,
-      // );
     }
   }
 
@@ -77,23 +73,19 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 32),
                     TextFormField(
                       controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        labelText: "Email",
-                        hintText: "example@gmail.com",
+                        labelText: "Email or Username",
+                        hintText: "example@gmail.com or username",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(24),
                         ),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
+                          return 'Please enter your email or username';
                         }
-                        if (!RegExp(
-                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                        ).hasMatch(value)) {
-                          return 'Please enter a valid email';
-                        }
+
                         return null;
                       },
                     ),
@@ -144,19 +136,6 @@ class _LoginPageState extends State<LoginPage> {
                     BlocConsumer<LoginCubit, LoginState>(
                       listener: (context, state) {
                         if (state is LoginFailure) {
-                          if (state.error.toLowerCase().contains(
-                            'verify your email',
-                          )) {
-                            // context.go(
-                            //   AppRouter.kVerifyCodeScreen,
-                            //   extra: _emailController.text,
-                            // );
-                          }
-                          if (state.error.toLowerCase().contains(
-                            'need verify',
-                          )) {
-                            // context.go(AppRouter.kTakeSelfie, extra: false);
-                          }
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(state.error),
@@ -164,7 +143,12 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           );
                         } else if (state is LoginSuccess) {
-                          // context.go(AppRouter.kHomePage);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomePage(),
+                            ),
+                          );
                         }
                       },
                       builder: (context, state) {
@@ -174,20 +158,12 @@ class _LoginPageState extends State<LoginPage> {
                               ? null
                               : () {
                                   _signIn(context);
-                                  // context.push(AppRouter.kTakeSelfie);
                                 },
                           isLoading: state is LoginLoading,
                         );
                       },
                     ),
                     const SizedBox(height: 32),
-                    CusttomFooter(
-                      text: "Don’t have an account?",
-                      buttonText: "Sign Up",
-                      onPressed: () {
-                        // context.push(AppRouter.kSignUp);
-                      },
-                    ),
                   ],
                 ),
               ),
