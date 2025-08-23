@@ -1,6 +1,9 @@
+import 'package:attendance_app/src/core/utils/service_locator.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setup();
   runApp(const MyApp());
 }
 
@@ -41,19 +44,14 @@ class _CounterPageState extends State<CounterPage>
   static final RadialGradient _backgroundRadialGradient = RadialGradient(
     center: Alignment.center,
     radius: 1.2,
-    colors: [
-      Colors.blue.shade900.withOpacity(0.2),
-      Colors.black,
-    ],
+    colors: [Colors.blue.shade900.withOpacity(0.2), Colors.black],
   );
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: const Duration(
-        milliseconds: 1500,
-      ),
+      duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
 
@@ -61,12 +59,10 @@ class _CounterPageState extends State<CounterPage>
       CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
     );
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.1),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
-    );
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.1), end: Offset.zero).animate(
+          CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+        );
 
     _animationController.forward().whenComplete(() {
       setState(() {
@@ -91,19 +87,20 @@ class _CounterPageState extends State<CounterPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title ,style: Theme.of(context).textTheme.titleSmall?.copyWith(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-        ),),
+        title: Text(
+          widget.title,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         backgroundColor: Colors.blue.shade900.withOpacity(0.5),
         elevation: 0,
       ),
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
       body: Container(
-        decoration: BoxDecoration(
-          gradient: _backgroundRadialGradient,
-        ),
+        decoration: BoxDecoration(gradient: _backgroundRadialGradient),
         constraints: const BoxConstraints.expand(),
         child: SafeArea(
           child: SingleChildScrollView(
@@ -164,20 +161,19 @@ class _CounterPageState extends State<CounterPage>
                             'Seamlessly installed and configured \nby: Flutter Setup Tool\n\n brought to you \nby: eng.Mustsfa Alqershi',
 
                             textAlign: TextAlign.center,
-                            style: Theme.of(
-                              context,
-                            ).textTheme.bodyLarge?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0.8,
-                              shadows: [
-                                Shadow(
-                                  blurRadius: 15,
-                                  color: Colors.black.withOpacity(0.3),
-                                  offset: const Offset(0, 3),
+                            style: Theme.of(context).textTheme.bodyLarge
+                                ?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.8,
+                                  shadows: [
+                                    Shadow(
+                                      blurRadius: 15,
+                                      color: Colors.black.withOpacity(0.3),
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
                           ),
                         ],
                       ),
@@ -189,9 +185,7 @@ class _CounterPageState extends State<CounterPage>
                   opacity: _showCounterContent ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 500),
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      bottom: 50.0,
-                    ),
+                    padding: const EdgeInsets.only(bottom: 50.0),
                     child: _buildCounterContent(context),
                   ),
                 ),
@@ -201,23 +195,21 @@ class _CounterPageState extends State<CounterPage>
           ),
         ),
       ),
-      floatingActionButton:
-      _showCounterContent
+      floatingActionButton: _showCounterContent
           ? FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.blue.shade700,
-        foregroundColor: Colors.white,
-      )
+              onPressed: _incrementCounter,
+              tooltip: 'Increment',
+              child: const Icon(Icons.add),
+              backgroundColor: Colors.blue.shade700,
+              foregroundColor: Colors.white,
+            )
           : null,
     );
   }
 
   Widget _buildCounterContent(BuildContext context) {
     return Column(
-      mainAxisAlignment:
-      MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
           'You have pushed the button this many times:',

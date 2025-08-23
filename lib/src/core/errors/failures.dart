@@ -6,61 +6,61 @@ abstract class Failure {
   Failure(this.failurMsg);
 }
 
-class Serverfailure extends Failure {
-  Serverfailure(super.failurMsg);
+class ServerFailure extends Failure {
+  ServerFailure(super.failurMsg);
 
-  factory Serverfailure.fromDioException(DioException dioException) {
+  factory ServerFailure.fromDioException(DioException dioException) {
     final message = dioException.message ?? 'Unknown error';
 
     switch (dioException.type) {
       case DioExceptionType.connectionTimeout:
-        return Serverfailure('Connection Timeout, please try again later');
+        return ServerFailure('Connection Timeout, please try again later');
 
       case DioExceptionType.sendTimeout:
-        return Serverfailure('Send Timeout, please try again later');
+        return ServerFailure('Send Timeout, please try again later');
 
       case DioExceptionType.receiveTimeout:
-        return Serverfailure('Receive Timeout, please try again later');
+        return ServerFailure('Receive Timeout, please try again later');
 
       case DioExceptionType.badCertificate:
-        return Serverfailure('Something happened, please try again later');
+        return ServerFailure('Something happened, please try again later');
 
       case DioExceptionType.badResponse:
-        return Serverfailure.fromResponse(
+        return ServerFailure.fromResponse(
           dioException.response?.statusCode,
           dioException.response,
         );
 
       case DioExceptionType.cancel:
-        return Serverfailure('Request was cancelled');
+        return ServerFailure('Request was cancelled');
 
       case DioExceptionType.connectionError:
-        return Serverfailure('Connection Error, please try again later');
+        return ServerFailure('Connection Error, please try again later');
 
       case DioExceptionType.unknown:
         if (message.contains('SocketException')) {
-          return Serverfailure('No Internet Connection');
+          return ServerFailure('No Internet Connection');
         }
-        return Serverfailure('There was an Error, please try again later');
+        return ServerFailure('There was an Error, please try again later');
     }
   }
 
-  factory Serverfailure.fromResponse(int? statusCode, dynamic response) {
+  factory ServerFailure.fromResponse(int? statusCode, dynamic response) {
     final dynamic responseData = response is Response
         ? response.data
         : response;
 
     if (statusCode == 400 || statusCode == 401 || statusCode == 403) {
-      return Serverfailure(
+      return ServerFailure(
         responseData is Map<String, dynamic> &&
                 responseData.containsKey('error')
             ? responseData['error']['message'] ?? 'Unknown error'
             : 'Unknown error',
       );
     } else if (statusCode == 404) {
-      return Serverfailure('Error 404: Your request not Found');
+      return ServerFailure('Error 404: Your request not Found');
     } else {
-      return Serverfailure('There was an Error, please try again later');
+      return ServerFailure('There was an Error, please try again later');
     }
   }
 }
