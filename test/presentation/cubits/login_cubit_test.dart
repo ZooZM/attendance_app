@@ -1,7 +1,7 @@
 import 'package:attendance_app/src/core/errors/failures.dart';
 import 'package:attendance_app/src/data/models/user_model.dart';
 import 'package:attendance_app/src/domain/usecases/login_use_case.dart';
-import 'package:attendance_app/src/presentation/cubits/cubit/login_cubit.dart';
+import 'package:attendance_app/src/presentation/cubits/login_cubit/login_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -28,7 +28,12 @@ void main() {
 
   const tEmail = "test@example.com";
   const tPassword = "123456";
-  final tUser = UserModel(id: "1", name: "John Doe", email: tEmail);
+  final tUser = UserModel(
+    id: "1",
+    name: "John Doe",
+    email: tEmail,
+    role: 'user',
+  );
 
   blocTest<LoginCubit, LoginState>(
     'emits [LoginLoading, LoginSuccess] when login succeeds',

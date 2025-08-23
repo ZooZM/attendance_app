@@ -3,7 +3,7 @@ import 'package:attendance_app/src/data/datasources/remote/remote_data_sorce.dar
 import 'package:attendance_app/src/data/repositories/auth_repo_impl.dart';
 import 'package:attendance_app/src/domain/repositories/auth_repo.dart';
 import 'package:attendance_app/src/domain/usecases/login_use_case.dart';
-import 'package:attendance_app/src/presentation/cubits/cubit/login_cubit.dart';
+import 'package:attendance_app/src/presentation/cubits/login_cubit/login_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
