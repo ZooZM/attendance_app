@@ -1,7 +1,7 @@
 import 'package:attendance_app/src/core/errors/failures.dart';
-import 'package:attendance_app/src/data/models/user_model.dart';
-import 'package:attendance_app/src/domain/usecases/login_use_case.dart';
-import 'package:attendance_app/src/presentation/cubits/login_cubit/login_cubit.dart';
+import 'package:attendance_app/src/core/models/user_model.dart';
+import 'package:attendance_app/src/features/home/domain/usecases/login_use_case.dart';
+import 'package:attendance_app/src/features/home/presentation/cubits/login_cubit/login_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
