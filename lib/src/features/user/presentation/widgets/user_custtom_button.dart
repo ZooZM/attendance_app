@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AttendanceButton extends StatelessWidget {
-  const AttendanceButton({
+class UserCusttomButton extends StatelessWidget {
+  const UserCusttomButton({
     super.key,
     required this.text,
     this.onPressed,

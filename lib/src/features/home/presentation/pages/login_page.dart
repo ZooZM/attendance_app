@@ -37,134 +37,132 @@ class _LoginPageState extends State<LoginPage> {
         _passwordController.text,
       );
     }
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const HomePage()),
+    // );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getIt<LoginCubit>(),
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: 100),
-                    const Text(
-                      "Sign in",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 100),
+                  const Text(
+                    "Sign in",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Hi! Welcome back, You've been missed",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                  const SizedBox(height: 32),
+                  TextFormField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      labelText: "Email or Username",
+                      hintText: "example@gmail.com or username",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      "Hi! Welcome back, You've been missed",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 32),
-                    TextFormField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        labelText: "Email or Username",
-                        hintText: "example@gmail.com or username",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your email or username';
-                        }
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email or username';
+                      }
 
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 32),
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: !_isPasswordVisible,
-                      decoration: InputDecoration(
-                        labelText: "Password",
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _isPasswordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _isPasswordVisible = !_isPasswordVisible;
-                            });
-                          },
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 32),
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: !_isPasswordVisible,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                         ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24),
-                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        if (value.length < 6) {
-                          return 'Password must be at least 6 characters';
-                        }
-                        return null;
-                      },
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
                     ),
-                    // const SizedBox(height: 12),
-                    // Align(
-                    //   alignment: Alignment.centerRight,
-                    //   child: TextButton(
-                    //     onPressed: _requestPasswordReset,
-                    //     child: const Text(
-                    //       "Forgot Password?",
-                    //       style: TextStyle(color: Color(0xff99A8C2)),
-                    //     ),
-                    //   ),
-                    // ),
-                    const SizedBox(height: 16),
-                    BlocConsumer<LoginCubit, LoginState>(
-                      listener: (context, state) {
-                        if (state is LoginFailure) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(state.error),
-                              duration: const Duration(seconds: 5),
-                            ),
-                          );
-                        } else if (state is LoginSuccess) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const HomePage(),
-                            ),
-                          );
-                        }
-                      },
-                      builder: (context, state) {
-                        return CusttomButton(
-                          text: 'Sign In',
-                          onPressed: state is LoginLoading
-                              ? null
-                              : () {
-                                  _signIn(context);
-                                },
-                          isLoading: state is LoginLoading,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      if (value.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      }
+                      return null;
+                    },
+                  ),
+                  // const SizedBox(height: 12),
+                  // Align(
+                  //   alignment: Alignment.centerRight,
+                  //   child: TextButton(
+                  //     onPressed: _requestPasswordReset,
+                  //     child: const Text(
+                  //       "Forgot Password?",
+                  //       style: TextStyle(color: Color(0xff99A8C2)),
+                  //     ),
+                  //   ),
+                  // ),
+                  const SizedBox(height: 16),
+                  BlocConsumer<LoginCubit, LoginState>(
+                    listener: (context, state) {
+                      if (state is LoginFailure) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(state.error),
+                            duration: const Duration(seconds: 5),
+                          ),
                         );
-                      },
-                    ),
-                    const SizedBox(height: 32),
-                  ],
-                ),
+                      } else if (state is LoginSuccess) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      return CusttomButton(
+                        text: 'Sign In',
+                        onPressed: state is LoginLoading
+                            ? null
+                            : () {
+                                _signIn(context);
+                              },
+                        isLoading: state is LoginLoading,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 32),
+                ],
               ),
             ),
           ),

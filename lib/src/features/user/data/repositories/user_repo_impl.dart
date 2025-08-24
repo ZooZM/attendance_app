@@ -37,7 +37,7 @@ class UserRepositoryImpl implements UserRepository {
           return Right(userEntities);
         } else {
           return Left(
-            ServerFailure('No cached users found, and server failed: $e'),
+            ServerFailure('No cached users found, and server failed.'),
           );
         }
       } catch (localError) {
@@ -93,7 +93,58 @@ class UserRepositoryImpl implements UserRepository {
       await localDataSource.updateUser(user);
       return const Right(null);
     } catch (e) {
-      return Left(ServerFailure('Failed to update user: $e'));
+      try {
+        final existingUsersLocal = await localDataSource
+            .getUserByUserNameOrEmail(user.userName, false);
+
+        final existingUsersLocalByEmail = await localDataSource
+            .getUserByUserNameOrEmail(user.email, true);
+        if (existingUsersLocal != null || existingUsersLocalByEmail != null) {
+          if (existingUsersLocalByEmail!.id == user.id) {
+            await localDataSource.updateUser(user);
+            return const Right(null);
+          }
+          return Left(
+            ServerFailure("this Email or userName already exists locally."),
+          );
+        }
+      } catch (e) {
+        return Left(ServerFailure('Failed to update local user: $e'));
+      }
+      return const Right(null);
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserModel>> fetchUserById(String id) async {
+    try {
+      final user = await remoteDataSource.fetchUserById(id);
+      return Right(user);
+    } catch (e) {
+      try {
+        final localUser = await localDataSource.getUserById(id);
+        if (localUser != null) {
+          return Right(localUser);
+        } else {
+          return Left(ServerFailure('No cached user found with id: $id'));
+        }
+      } catch (localError) {
+        return Left(
+          ServerFailure(
+            'Failed to fetch user from both remote and local: $e | local error: $localError',
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteUser(String userId) async {
+    try {
+      await localDataSource.deleteUser(userId);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure('Failed to delete user: $e'));
     }
   }
 }

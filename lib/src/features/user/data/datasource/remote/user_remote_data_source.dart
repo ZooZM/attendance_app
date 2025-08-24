@@ -5,6 +5,7 @@ abstract class UserRemoteDataSource {
   Future<List<UserModel>> fetchUsers();
   Future<UserModel> changeAttendanceState(String userId, String newState);
   Future<void> updateUser(UserModel user);
+  Future<UserModel> fetchUserById(String userId);
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -31,5 +32,10 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<void> updateUser(UserModel user) async {
     await apiClient.updateUser(user.id, user.toJson());
+  }
+
+  @override
+  Future<UserModel> fetchUserById(String userId) async {
+    return await apiClient.getUser(userId);
   }
 }

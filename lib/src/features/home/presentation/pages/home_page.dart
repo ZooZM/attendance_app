@@ -1,4 +1,5 @@
 import 'package:attendance_app/constants.dart';
+import 'package:attendance_app/src/features/home/presentation/pages/profile_page.dart';
 import 'package:attendance_app/src/features/user/presentation/pages/attendance_page.dart';
 import 'package:attendance_app/src/features/home/presentation/pages/settings_page.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int pageIndex = 1;
 
-  final List<Widget> pages = const [AttendancePage(), SettingsPage()];
+  final List<Widget> pages = const [
+    AttendancePage(),
+    ProfilePage(),
+    SettingsPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +37,7 @@ class _HomePageState extends State<HomePage> {
         },
         items: const [
           Icon(Icons.check_circle, size: 30, color: Colors.white),
+          Icon(Icons.person, size: 30, color: Colors.white),
           Icon(Icons.settings, size: 30, color: Colors.white),
         ],
       ),

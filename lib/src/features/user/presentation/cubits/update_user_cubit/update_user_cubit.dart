@@ -12,6 +12,7 @@ class UpdateUserCubit extends Cubit<UpdateUserState> {
   final UpdateUserUseCase _updateUserUseCase;
 
   void routeUser(UserEntity user) {
+    emit(UpdateUserLoading());
     emit(UpdateUserRoute(user));
   }
 

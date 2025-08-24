@@ -1,7 +1,7 @@
 import 'package:attendance_app/constants.dart';
 import 'package:attendance_app/src/features/user/domain/entities/user_fronted_detailes_model.dart';
 import 'package:attendance_app/src/features/user/presentation/cubits/change_attendance_state/change_attendance_state_cubit.dart';
-import 'package:attendance_app/src/features/user/presentation/widgets/attendance_button.dart';
+import 'package:attendance_app/src/features/user/presentation/widgets/user_custtom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,7 +17,7 @@ class ChangeStateWidget extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            AttendanceButton(
+            UserCusttomButton(
               text: "Check In",
               color: kPrimaryColor,
               isLoading:
@@ -33,7 +33,7 @@ class ChangeStateWidget extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
-            AttendanceButton(
+            UserCusttomButton(
               text: "Check Out",
               color: kOrange,
               isLoading:

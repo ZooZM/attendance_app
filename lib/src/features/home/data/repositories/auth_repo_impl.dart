@@ -62,6 +62,7 @@ class AuthRepoImpl implements AuthRepo {
     required String name,
   }) async {
     try {
+      await localDataSource.clearCache();
       final result = await remoteDataSource.createAccount(
         userName,
         email,

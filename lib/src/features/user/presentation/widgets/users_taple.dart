@@ -16,7 +16,12 @@ class UsersTable extends StatefulWidget {
 }
 
 class _UsersTableState extends State<UsersTable> {
-  String? selectedUserId;
+  late String? selectedUserId;
+  @override
+  void initState() {
+    super.initState();
+    selectedUserId = widget.users.isNotEmpty ? widget.users.first.id : null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,19 +40,19 @@ class _UsersTableState extends State<UsersTable> {
             children: [
               Expanded(
                 child: Text(
-                  "userName",
+                  "UserName",
                   style: Styles.subtitle18Bold.copyWith(color: kWhite),
                 ),
               ),
               Expanded(
                 child: Text(
-                  "name",
+                  "Email",
                   style: Styles.subtitle18Bold.copyWith(color: kWhite),
                 ),
               ),
               Expanded(
                 child: Text(
-                  "attendance",
+                  "Attendance",
                   style: Styles.subtitle16Bold.copyWith(color: kWhite),
                 ),
               ),
@@ -77,7 +82,8 @@ class _UsersTableState extends State<UsersTable> {
               child: Row(
                 children: [
                   Expanded(child: Text(user.userName)),
-                  Expanded(child: Text(user.name)),
+                  Expanded(child: Text(user.email)),
+                  SizedBox(width: 4),
                   Expanded(
                     child: user.attendance != "null"
                         ? Text(
@@ -93,7 +99,6 @@ class _UsersTableState extends State<UsersTable> {
                             style: TextStyle(color: Colors.red),
                           ),
                   ),
-
                   GestureDetector(
                     child: Icon(Icons.edit, color: kPrimaryColor),
                     onTap: () {

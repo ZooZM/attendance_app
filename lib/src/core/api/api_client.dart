@@ -28,4 +28,6 @@ abstract class ApiClient {
     @Path("id") String userId,
     @Body() Map<String, dynamic> body,
   );
+  @GET("/users/{id}")
+  Future<UserModel> getUser(@Path("id") String userId);
 }

@@ -1,4 +1,5 @@
 import 'package:attendance_app/src/core/models/user_model.dart';
+import 'package:collection/collection.dart';
 import 'package:hive/hive.dart';
 
 abstract class UserLocalDataSource {
@@ -6,6 +7,11 @@ abstract class UserLocalDataSource {
   Future<void> cacheUsers(List<UserModel> users);
   Future<void> updateUser(UserModel user);
   Future<UserModel?> getUserById(String userId);
+  Future<UserModel?> getUserByUserNameOrEmail(
+    String userNameOrEmail,
+    bool isEmail,
+  );
+  Future<void> deleteUser(String userId);
 }
 
 class UserLocalDataSourceImpl implements UserLocalDataSource {
@@ -38,5 +44,27 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   Future<UserModel?> getUserById(String userId) async {
     final box = await Hive.openBox<UserModel>(_userBox);
     return box.get(userId);
+  }
+
+  @override
+  Future<UserModel?> getUserByUserNameOrEmail(
+    String userNameOrEmail,
+    bool isEmail,
+  ) async {
+    final box = await Hive.openBox<UserModel>(_userBox);
+
+    final user = box.values.firstWhereOrNull(
+      (user) => isEmail
+          ? user.email == userNameOrEmail
+          : user.userName == userNameOrEmail,
+    );
+
+    return user;
+  }
+
+  @override
+  Future<void> deleteUser(String userId) async {
+    final box = await Hive.openBox<UserModel>(_userBox);
+    await box.delete(userId);
   }
 }
