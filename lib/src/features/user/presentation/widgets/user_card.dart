@@ -1,17 +1,11 @@
 import 'package:attendance_app/constants.dart';
 import 'package:attendance_app/src/core/utils/styles.dart';
+import 'package:attendance_app/src/features/user/domain/entities/user_fronted_detailes_model.dart';
 import 'package:flutter/material.dart';
 
 class UserCard extends StatelessWidget {
-  const UserCard({
-    super.key,
-    required this.userName,
-    required this.currentStatus,
-    required this.lastAction,
-  });
-  final String userName;
-  final String currentStatus;
-  final String lastAction;
+  const UserCard({super.key, required this.userEntity});
+  final UserEntity userEntity;
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +17,14 @@ class UserCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("User: $userName", style: Styles.subtitle18Bold),
+            Text("User: ${userEntity.name}", style: Styles.subtitle18Bold),
             SizedBox(height: 10),
 
-            Text(
-              "Current Status: $currentStatus",
-              style: Styles.subtitle18Bold,
-            ),
+            Text("Email: ${userEntity.email}", style: Styles.subtitle18Bold),
+            Text("role: ${userEntity.role}", style: Styles.subtitle18Bold),
             SizedBox(height: 10),
             Text(
-              "Last action: $lastAction",
+              "ID: ${userEntity.id}",
               style: Styles.subtitle16Bold.copyWith(color: kGray),
             ),
           ],

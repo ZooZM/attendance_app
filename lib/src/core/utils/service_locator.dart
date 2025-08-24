@@ -11,7 +11,11 @@ import 'package:attendance_app/src/features/user/data/datasource/local/user_loca
 import 'package:attendance_app/src/features/user/data/datasource/remote/user_remote_data_source.dart';
 import 'package:attendance_app/src/features/user/data/repositories/user_repo_impl.dart';
 import 'package:attendance_app/src/features/user/domain/repositories/user_repo.dart';
+import 'package:attendance_app/src/features/user/domain/usercases/change_attendance_state_use_case.dart';
 import 'package:attendance_app/src/features/user/domain/usercases/fetch_users_use_case.dart';
+import 'package:attendance_app/src/features/user/domain/usercases/update_user_use_case.dart';
+import 'package:attendance_app/src/features/user/presentation/cubits/change_attendance_state/change_attendance_state_cubit.dart';
+import 'package:attendance_app/src/features/user/presentation/cubits/update_user_cubit/update_user_cubit.dart';
 import 'package:attendance_app/src/features/user/presentation/cubits/fetch_users_cubit/fetch_users_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -42,8 +46,12 @@ Future<void> setup() async {
   getIt.registerLazySingleton(() => LoginUseCase(getIt()));
   getIt.registerLazySingleton(() => CreateAccountUseCase(getIt()));
   getIt.registerLazySingleton(() => FetchUsersUseCase(getIt()));
+  getIt.registerLazySingleton(() => ChangeAttendanceStateUseCase(getIt()));
+  getIt.registerLazySingleton(() => UpdateUserUseCase(getIt()));
 
   getIt.registerFactory(() => LoginCubit(getIt()));
   getIt.registerFactory(() => CreateAccountCubit(getIt()));
   getIt.registerFactory(() => FetchUsersCubit(getIt()));
+  getIt.registerFactory(() => ChangeAttendanceStateCubit(getIt()));
+  getIt.registerFactory(() => UpdateUserCubit(getIt()));
 }

@@ -87,11 +87,10 @@ class AuthRepoImpl implements AuthRepo {
         email: email,
         role: role,
         userName: userName,
-        attendance: [],
+        attendance: "null",
         createdAt: DateTime.now(),
         password: password,
       );
-
       await localDataSource.storeUser(localUser);
       return Right(localUser);
     }

@@ -16,4 +16,16 @@ abstract class ApiClient {
 
   @GET("/users")
   Future<List<UserModel>> getUsers();
+
+  @POST("/users/{id}/attendance")
+  Future<UserModel> changeAttendanceState(
+    @Path("id") String userId,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @PUT("/users/{id}")
+  Future<void> updateUser(
+    @Path("id") String userId,
+    @Body() Map<String, dynamic> body,
+  );
 }

@@ -1,4 +1,3 @@
-import 'package:attendance_app/src/core/models/attendance_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -23,7 +22,7 @@ class UserModel extends HiveObject {
   final String userName;
 
   @HiveField(5)
-  final List<AttendanceModel> attendance;
+  final String attendance;
 
   @HiveField(6)
   final DateTime createdAt;

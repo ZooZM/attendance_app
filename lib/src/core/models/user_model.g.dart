@@ -24,7 +24,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       email: fields[2] as String,
       role: fields[3] as String,
       userName: fields[4] as String,
-      attendance: (fields[5] as List).cast<AttendanceModel>(),
+      attendance: fields[5] as String,
     );
   }
 
@@ -73,9 +73,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       email: json['email'] as String,
       role: json['role'] as String,
       userName: json['userName'] as String,
-      attendance: (json['attendance'] as List<dynamic>)
-          .map((e) => AttendanceModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      attendance: json['attendance'] as String,
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -84,7 +82,7 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'email': instance.email,
       'role': instance.role,
       'userName': instance.userName,
-      'attendance': instance.attendance.map((e) => e.toJson()).toList(),
+      'attendance': instance.attendance,
       'createdAt': instance.createdAt.toIso8601String(),
       'password': instance.password,
     };

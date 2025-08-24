@@ -1,4 +1,5 @@
 import 'package:attendance_app/src/core/errors/failures.dart';
+import 'package:attendance_app/src/core/models/user_model.dart';
 import 'package:attendance_app/src/features/user/data/datasource/local/user_local_data_source.dart';
 import 'package:attendance_app/src/features/user/data/datasource/remote/user_remote_data_source.dart';
 import 'package:attendance_app/src/features/user/domain/entities/user_fronted_detailes_model.dart';
@@ -26,7 +27,12 @@ class UserRepositoryImpl implements UserRepository {
 
         if (localUsers.isNotEmpty) {
           List<UserEntity> userEntities = localUsers
-              .map((user) => UserEntity.fromJson(user.toJson()))
+              .map(
+                (user) => user.role != 'admin'
+                    ? UserEntity.fromJson(user.toJson())
+                    : null,
+              )
+              .whereType<UserEntity>()
               .toList();
           return Right(userEntities);
         } else {
@@ -41,6 +47,53 @@ class UserRepositoryImpl implements UserRepository {
           ),
         );
       }
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> changeAttendanceState(
+    String userId,
+    String newState,
+  ) async {
+    try {
+      UserModel user = await remoteDataSource.changeAttendanceState(
+        userId,
+        newState,
+      );
+      await localDataSource.updateUser(user);
+      return const Right(null);
+    } catch (e) {
+      try {
+        UserModel? user = await localDataSource.getUserById(userId);
+        if (user != null) {
+          await localDataSource.updateUser(
+            UserModel(
+              password: user.password,
+              createdAt: user.createdAt,
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              role: user.role,
+              userName: user.userName,
+              attendance: newState,
+            ),
+          );
+        }
+      } catch (e) {
+        return Left(ServerFailure('Failed to update local user: $e'));
+      }
+      return const Right(null);
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateUser(UserModel user) async {
+    try {
+      await remoteDataSource.updateUser(user);
+      await localDataSource.updateUser(user);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure('Failed to update user: $e'));
     }
   }
 }
