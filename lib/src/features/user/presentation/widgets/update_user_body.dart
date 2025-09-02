@@ -1,7 +1,8 @@
+import 'package:attendance_app/constants.dart';
 import 'package:attendance_app/src/core/models/user_model.dart';
+import 'package:attendance_app/src/features/home/presentation/pages/home_page.dart';
 import 'package:attendance_app/src/features/user/presentation/cubits/delete_user_cubit/delete_user_cubit_cubit.dart';
 import 'package:attendance_app/src/features/user/presentation/cubits/fetch_single_user_cubit/fetch_single_user_cubit.dart';
-import 'package:attendance_app/src/features/user/presentation/cubits/fetch_users_cubit/fetch_users_cubit.dart';
 import 'package:attendance_app/src/features/user/presentation/cubits/update_user_cubit/update_user_cubit.dart';
 import 'package:attendance_app/src/features/user/presentation/widgets/update_or_delete_user_widget.dart';
 import 'package:flutter/material.dart';
@@ -83,119 +84,140 @@ class _UpdateUserBodyState extends State<UpdateUserBody> {
   void _deleteUser() async {
     if (user != null) {
       await context.read<DeleteUserCubit>().deleteUser(user!.id);
-
-      Navigator.pop(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<UpdateUserCubit, UpdateUserState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (!mounted) return;
         if (state is UpdateUserSuccess) {
-          context.read<FetchUsersCubit>().fetchUsers();
-          Navigator.pop(context);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+            (Route<dynamic> route) => false,
+          );
         } else if (state is UpdateUserFailure) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
-      child: BlocBuilder<FetchSingleUserCubit, FetchSingleUserState>(
-        builder: (context, state) {
-          if (state is FetchSingleUserLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is FetchSingleUserFailure) {
-            return Center(child: Text(state.message));
-          } else if (state is FetchSingleUserSuccess) {
-            if (user == null) {
-              user = state.user;
-              _nameController.text = user!.name;
-              _emailController.text = user!.email;
-              _userNameController.text = user!.userName;
-              _selectRole = user!.role;
-            }
+      child: BlocListener<DeleteUserCubit, DeleteUserState>(
+        listener: (context, state) async {
+          if (!mounted) return;
+          if (state is DeleteUserSuccess) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+              (Route<dynamic> route) => false,
+            );
+          } else if (state is DeleteUserFailure) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
-
-          return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-            child: Form(
-              key: _formKey,
-
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextFormField(
-                    controller: _userNameController,
-                    decoration: InputDecoration(
-                      labelText: "UserName",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                    ),
-                    validator: (value) => value == null || value.isEmpty
-                        ? "Enter username"
-                        : null,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      labelText: "Name",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                    ),
-                    validator: (value) =>
-                        value == null || value.isEmpty ? "Enter name" : null,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: "Email",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                    ),
-                    validator: validateEmail,
-                  ),
-                  const SizedBox(height: 16),
-                  DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      labelText: 'Role',
-                      prefixIcon: const Icon(Icons.person),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                    ),
-                    value: _selectRole,
-                    items: ['Employee', 'Customer', 'Manager']
-                        .map(
-                          (role) =>
-                              DropdownMenuItem(value: role, child: Text(role)),
-                        )
-                        .toList(),
-                    onChanged: (newValue) {
-                      setState(() => _selectRole = newValue);
-                    },
-                    validator: (value) =>
-                        value == null ? 'Please select a role' : null,
-                  ),
-                  const SizedBox(height: 24),
-
-                  if (user != null)
-                    UpdateOrDeleteUserWidget(
-                      isLoadign: state is UpdateUserLoading,
-                      onUpdate: _updateUser,
-                      onDelete: _deleteUser,
-                    ),
-                ],
-              ),
-            ),
-          );
         },
+        child: BlocBuilder<FetchSingleUserCubit, FetchSingleUserState>(
+          builder: (context, state) {
+            if (state is FetchSingleUserLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is FetchSingleUserFailure) {
+              return Center(child: Text(state.message));
+            } else if (state is FetchSingleUserSuccess) {
+              if (user == null) {
+                user = state.user;
+                _nameController.text = user!.name;
+                _emailController.text = user!.email;
+                _userNameController.text = user!.userName;
+                _selectRole = user!.role;
+              }
+            }
+
+            return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TextFormField(
+                      controller: _userNameController,
+                      decoration: InputDecoration(
+                        labelText: "UserName",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                      ),
+                      validator: (value) => value == null || value.isEmpty
+                          ? "Enter username"
+                          : null,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        labelText: "Name",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                      ),
+                      validator: (value) =>
+                          value == null || value.isEmpty ? "Enter name" : null,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        labelText: "Email",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                      ),
+                      validator: validateEmail,
+                    ),
+                    const SizedBox(height: 16),
+                    DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        labelText: 'Role',
+                        prefixIcon: const Icon(Icons.person),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                      ),
+                      value: _selectRole,
+                      items: roles
+                          .map(
+                            (role) => DropdownMenuItem(
+                              value: role,
+                              child: Text(role),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (newValue) {
+                        setState(() => _selectRole = newValue);
+                      },
+                      validator: (value) =>
+                          value == null ? 'Please select a role' : null,
+                    ),
+                    const SizedBox(height: 24),
+
+                    if (user != null)
+                      UpdateOrDeleteUserWidget(
+                        isLoadign:
+                            state is UpdateUserLoading ||
+                            state is DeleteUserLoading ||
+                            state is FetchSingleUserLoading,
+                        onUpdate: _updateUser,
+                        onDelete: _deleteUser,
+                      ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

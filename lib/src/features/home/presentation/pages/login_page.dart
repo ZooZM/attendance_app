@@ -1,6 +1,7 @@
-import 'package:attendance_app/src/core/utils/service_locator.dart';
+import 'package:attendance_app/constants.dart';
 import 'package:attendance_app/src/features/home/presentation/cubits/login_cubit/login_cubit.dart';
 import 'package:attendance_app/src/features/home/presentation/pages/home_page.dart';
+import 'package:attendance_app/src/features/home/presentation/pages/settings_page.dart';
 import 'package:attendance_app/src/features/home/presentation/widgets/custtom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -161,7 +162,24 @@ class _LoginPageState extends State<LoginPage> {
                       );
                     },
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SettingsPage(),
+                          ),
+                        );
+                      },
+                      icon: const Text(
+                        "Create an account",
+                        style: TextStyle(color: ksecondryColor),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

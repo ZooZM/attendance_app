@@ -1,3 +1,4 @@
+import 'package:attendance_app/constants.dart';
 import 'package:attendance_app/src/features/home/domain/usecases/craete_acount_use_case.dart';
 import 'package:attendance_app/src/features/home/presentation/cubits/create_account_cubit/create_account_cubit.dart';
 import 'package:attendance_app/src/features/home/presentation/widgets/custtom_button.dart';
@@ -143,7 +144,7 @@ class _CreateAcountFormkeyState extends State<CreateAcountFormkey> {
               ),
             ),
             value: _selectRole,
-            items: ['Employee', 'Customer', 'Manager'].map((String gender) {
+            items: roles.map((String gender) {
               return DropdownMenuItem<String>(
                 value: gender,
                 child: Text(gender),

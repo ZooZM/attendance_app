@@ -65,11 +65,6 @@ class _AttendanceBodyState extends State<AttendanceBody> {
             listener: (context, state) {
               if (!mounted) return;
               if (state is ChangeAttendanceStateSuccess) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Attendance state changed successfully'),
-                  ),
-                );
                 context.read<FetchUsersCubit>().fetchUsers();
               } else if (state is ChangeAttendanceStateFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -92,9 +87,6 @@ class _AttendanceBodyState extends State<AttendanceBody> {
                 );
               }
               if (state is UpdateUserSuccess) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('User updated successfully')),
-                );
                 context.read<FetchUsersCubit>().fetchUsers();
               } else if (state is UpdateUserFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(

@@ -8,3 +8,5 @@ const kBlack = Color(0xFF000000);
 const kWhite = Color(0xFFffffff);
 const kGray = Color(0xFFc4cbd9);
 const kOrange = Color(0xFFf04a4a);
+
+List<String> roles = ['Employee', 'Customer', 'Manager', 'Admin'];

@@ -36,7 +36,7 @@ class AuthRepoImpl implements AuthRepo {
           return Left(ServerFailure("User not Found."));
         }
         if (localUser!.password == password) {
-          if (localUser.role == 'admin') {
+          if (localUser.role == 'Admin') {
             return Right(localUser);
           } else {
             return Left(ServerFailure("You are not authorized to login."));
@@ -62,7 +62,6 @@ class AuthRepoImpl implements AuthRepo {
     required String name,
   }) async {
     try {
-      await localDataSource.clearCache();
       final result = await remoteDataSource.createAccount(
         userName,
         email,

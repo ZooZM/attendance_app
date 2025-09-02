@@ -1,3 +1,4 @@
+import 'package:attendance_app/constants.dart';
 import 'package:attendance_app/src/core/models/user_model.dart';
 import 'package:attendance_app/src/features/home/presentation/cubits/login_cubit/login_cubit.dart';
 import 'package:attendance_app/src/features/user/presentation/cubits/delete_user_cubit/delete_user_cubit_cubit.dart';
@@ -119,6 +120,12 @@ class _ProfileBodyState extends State<ProfileBody> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Image.asset(
+                      'assets/app_icon/app_logo.png',
+                      height: 200,
+                      width: 200,
+                    ),
+
                     TextFormField(
                       controller: _userNameController,
                       decoration: InputDecoration(
@@ -163,8 +170,8 @@ class _ProfileBodyState extends State<ProfileBody> {
                           borderRadius: BorderRadius.circular(24),
                         ),
                       ),
-                      value: _selectRole,
-                      items: ['Employee', 'Customer', 'Manager', 'admin']
+                      initialValue: _selectRole,
+                      items: roles
                           .map(
                             (role) => DropdownMenuItem(
                               value: role,

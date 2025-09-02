@@ -89,7 +89,7 @@ class _UsersTableState extends State<UsersTable> {
                         ? Text(
                             user.attendance,
                             style: TextStyle(
-                              color: user.attendance.toLowerCase() == "check_in"
+                              color: user.attendance.toLowerCase() == "check in"
                                   ? Colors.green
                                   : Colors.red,
                             ),
